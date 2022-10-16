@@ -33,7 +33,7 @@ inline namespace v1 {
 extern "C" {
 #endif
 
-void InstallSignalHandlers();
+void InstallSignalHandlers(int signals[], int length);
 
 #ifdef __cplusplus
 }

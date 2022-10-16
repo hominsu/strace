@@ -72,22 +72,21 @@ void sigHandler(int sig, siginfo_t *info, void *ucontext) {
   std::raise(sig);
 }
 
-void InstallSignalHandlers() {
+void InstallSignalHandlers(int signals[], int length) {
   struct sigaction act{};
 
   sigemptyset(&act.sa_mask);
   act.sa_flags = SA_NODEFER | SA_RESETHAND | SA_SIGINFO;
   act.sa_sigaction = sigHandler;
-  sigaction(SIGILL, &act, nullptr);
-  sigaction(SIGSEGV, &act, nullptr);
-  sigaction(SIGBUS, &act, nullptr);
-  sigaction(SIGABRT, &act, nullptr);
+
+  for (int i = 0; i < length; ++i) {
+    sigaction(signals[i], &act, nullptr);
+  }
 }
 
 #ifdef __cplusplus
 }
 #endif
-
 
 } // namespace v1
 } // namespace strace
