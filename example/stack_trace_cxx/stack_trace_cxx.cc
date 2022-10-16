@@ -26,27 +26,34 @@
 
 #include "strace/stack_trace.h"
 
+#include <csignal>
 #include <cstdio>
 
-void foo() __attribute__((noinline));
-void bar() __attribute__((noinline));
-
-void foo() {
-  bar();
-}
-
-void bar() {
+class bar {
+ private:
   int *p = (int *) -1;
-  printf("%d\n", *p);
-}
+
+ public:
+  __attribute__((noinline)) void print_in_bar() {
+    printf("%d\n", *p);
+  }
+};
+
+class foo : public bar {
+ public:
+  __attribute__((noinline)) void print_in_foo() {
+    print_in_bar();
+  }
+};
 
 int main(int argc, char *argv[]) {
   (void) argc;
   (void) argv;
 
-  strace::InstallSignalHandlers();
+  int sigs[] = {SIGILL, SIGSEGV, SIGBUS, SIGABRT};
+  strace::InstallSignalHandlers(sigs, sizeof(sigs) / sizeof(int));
 
-  foo();
+  foo().print_in_foo();
 
   return 0;
 }
