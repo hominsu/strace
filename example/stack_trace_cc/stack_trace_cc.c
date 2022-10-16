@@ -26,6 +26,7 @@
 
 #include "strace/stack_trace.h"
 
+#include <signal.h>
 #include <stdio.h>
 
 void foo() __attribute__((noinline));
@@ -44,7 +45,8 @@ int main(int argc, char *argv[]) {
   (void) argc;
   (void) argv;
 
-  InstallSignalHandlers();
+  int sigs[] = {SIGILL, SIGSEGV, SIGBUS, SIGABRT};
+  InstallSignalHandlers(sigs, sizeof(sigs) / sizeof(int));
 
   foo();
 
