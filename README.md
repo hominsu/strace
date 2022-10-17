@@ -54,7 +54,7 @@ popd
 The example code is part of the `strace` repo source, which you cloned as part of the steps of the previous section, just add a cmake option:
 
 ```bash
-cmake -DNEUJSON_BUILD_EXAMPLES=ON ../..
+cmake -DSTRACE_BUILD_EXAMPLES=ON ../..
 ```
 
 ## Uninstall
