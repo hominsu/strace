@@ -51,6 +51,7 @@ void print_stack(ucontext_t *uc) {
     frames[0] = addr;
     backtrace_symbols_fd(frames, 1, STDERR_FILENO);
   }
+  dprintf(STDERR_FILENO, "\n");
   backtrace_symbols_fd(frames + 1, num_frames, STDERR_FILENO);
 }
 
